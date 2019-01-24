@@ -41,7 +41,7 @@
 					<img src="images/img-01.png" alt="IMG">
 				</div>
 
-				<form class="login100-form validate-form" method="post">
+				<form class="login100-form validate-form" action="php/inicio_sesion.php" method="post">
 					<span class="login100-form-title">
 						Inicio de Sesion
 					</span>

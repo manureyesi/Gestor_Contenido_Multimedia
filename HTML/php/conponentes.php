@@ -15,7 +15,7 @@
           $url_pelicula = str_replace(" ", "_", $row["NOMBRE"]);
 
           $crearmenu .= '<div class="gallery">
-            <a target="_blank" href="VerPeliculas?pelicula='.$url_pelicula.'">
+            <a href="VerPeliculas.php?pelicula='.$url_pelicula.'">
               <img src="'.$row["URL_IMG"].'" alt="'.$row["NOMBRE"].'" width="600" height="400">
             </a>
             <div class="desc">'.$row["NOMBRE"].'</div>
@@ -50,6 +50,83 @@
         }
 
         return $error;
+    }
+
+    function ErrorInicioSesion($error){
+
+        $respuestaError = '';
+
+        switch ($error) {
+            case '1':
+                $respuestaError = 'Los campos no pueden estar vacios';
+                break;
+
+            default:
+                $respuestaError = 'Error Generico';
+                break;
+        }
+        return $respuestaError;
+    }
+
+    function usuarioInicioSesion($usuario, $contrasena){
+
+        $error = false;
+
+        $resultado = selectPreparado("USUARIOS", "USUARIO = '".$usuario."' and CONTRASENA = '".$contrasena."'");
+
+        foreach ($resultado as $row){
+            $error = true;
+        }
+
+        return $error;
+
+    }
+
+    function reproducirPelicula($pelicula){
+
+        $buscar_pelicula = str_replace("_", " ", $pelicula);
+
+        $error = true;
+        $crearPelis = '';
+        $resultado = selectPreparado("PELICULAS", "NOMBRE = '".$buscar_pelicula."'");
+
+        foreach ($resultado as $row){
+
+            $error = false;
+            $path;
+
+            if (file_exists(CARPETA_PELIS1.$row["URL_VIDEO"])) {
+                $path = CARPETA_PELIS1.$row["URL_VIDEO"];
+            } else if (file_exists(CARPETA_PELIS2.$row["URL_VIDEO"])) {
+                $path = CARPETA_PELIS2.$row["URL_VIDEO"];
+            } else{
+                $error = true;
+            }
+
+            $crearPelis .= '<video width="320" height="240" autoplay>
+                             <source src="'.$path.'" type="video/mp4">
+                            Your browser does not support the video tag.
+                            </video> ';
+        }
+
+        if($error === true){
+            header('Location: peliculas.php');
+        }
+        echo $crearPelis;
+
+    }
+
+    function incrementarVisita($pelicula){
+        $buscar_pelicula = str_replace("_", " ", $pelicula);
+
+        $resultado = selectPreparado("PELICULAS", "NOMBRE = '".$buscar_pelicula."'");
+
+        foreach ($resultado as $row){
+            $suma = $row["VISITAS"]+1;
+            updatePreparado("PELICULAS", "VISITAS = ".$suma, "NOMBRE = '".$buscar_pelicula."'");
+        }
+
+
     }
 
 ?>

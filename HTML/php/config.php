@@ -7,4 +7,7 @@
 
     define("charset", "utf8");
 
+    define("CARPETA_PELIS1", "peliculas1/");
+    define("CARPETA_PELIS2", "peliculas2/");
+
 ?>
