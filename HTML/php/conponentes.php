@@ -130,4 +130,27 @@
 
     }
 
+    function listaGeneros(){
+        $listaGeneros;
+
+        $resultado = selectPreparado("GENERO", "1=1");
+
+        foreach ($resultado as $row){
+            $listaGeneros .= '<option value="'.$row["ID"].'">'.$row["NOMBRE"].'</option>';
+        }
+
+        return $listaGeneros;
+    }
+
+    function subirPelicula($datos, $genero){
+        $error = false;
+        if($genero){
+            $error = insertPreparado("PELICULAS", "NOMBRE, URL_VIDEO, URL_IMG, GENERO, FECHA_SALIDA", $datos);
+        } else{
+            $error = insertPreparado("PELICULAS", "NOMBRE, URL_VIDEO,  URL_IMG, FECHA_SALIDA", $datos);
+        }
+
+        return $error;
+    }
+
 ?>
