@@ -12,7 +12,7 @@
 
           $error = false;
 
-          $url_pelicula = str_replace(" ", "_", $row["NOMBRE"]);
+          $url_pelicula = str_replace(" ", "%", $row["NOMBRE"]);
 
           $crearmenu .= '<div class="gallery">
             <a href="VerPeliculas.php?pelicula='.$url_pelicula.'">
@@ -84,7 +84,7 @@
 
     function reproducirPelicula($pelicula){
 
-        $buscar_pelicula = str_replace("_", " ", $pelicula);
+        $buscar_pelicula = str_replace("%", " ", $pelicula);
 
         $error = true;
         $crearPelis = '';
@@ -103,8 +103,9 @@
                 $error = true;
             }
 
-            $crearPelis .= '<video width="320" height="240" autoplay>
+            $crearPelis .= '<video width="80%" height="50%" autoplay controls>
                              <source src="'.$path.'" type="video/mp4">
+                             <source src="'.$path.'" type="video/x-matroska">
                             Your browser does not support the video tag.
                             </video> ';
         }
@@ -117,7 +118,7 @@
     }
 
     function incrementarVisita($pelicula){
-        $buscar_pelicula = str_replace("_", " ", $pelicula);
+        $buscar_pelicula = str_replace("%", " ", $pelicula);
 
         $resultado = selectPreparado("PELICULAS", "NOMBRE = '".$buscar_pelicula."'");
 
